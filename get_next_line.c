@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:00:44 by phhofman          #+#    #+#             */
-/*   Updated: 2024/10/27 17:59:43 by phhofman         ###   ########.fr       */
+/*   Updated: 2024/10/27 18:34:46 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,24 @@ char	*get_next_line(int fd)
 		if (str)
 		{	
 			remaining = ft_strdup(rest_buf + ft_strlen(str));
+			if (!remaining)
+			{
+				free(rest_buf);
+				rest_buf = NULL;
+				return (NULL);
+			}
 			free(rest_buf);
+			rest_buf = NULL;
 			rest_buf = remaining;
 			return (str);
 		}
 	}
-	else 
+	else
+	{
 		rest_buf = ft_strdup("");
+		if (!rest_buf)
+			return (NULL);
+	}
 
 
 	bytes_read = read(fd, buf, BUFFER_SIZE);
@@ -42,6 +53,12 @@ char	*get_next_line(int fd)
 	{
 		buf[bytes_read] = '\0';
 		remaining = ft_strjoin(rest_buf, buf);
+		if (!remaining)
+		{
+			free(rest_buf);
+			rest_buf = NULL;
+			return (NULL);
+		}
 		free(rest_buf);
 		rest_buf = remaining;
 		
@@ -49,6 +66,12 @@ char	*get_next_line(int fd)
 		if (str)
 		{	
 			remaining = ft_strdup(rest_buf + ft_strlen(str));
+			if (!remaining)
+			{
+				free (rest_buf);
+				rest_buf = NULL;
+				return (NULL);
+			}
 			free(rest_buf);
 			rest_buf = remaining;
 			return (str);
