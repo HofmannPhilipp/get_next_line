@@ -6,11 +6,12 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 13:26:04 by phhofman          #+#    #+#             */
-/*   Updated: 2024/10/27 18:54:42 by phhofman         ###   ########.fr       */
+/*   Updated: 2024/10/28 09:54:00 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
 
 size_t	ft_strlen(const char *str)
 {
@@ -94,7 +95,7 @@ char	*search_for_new_line(char *buf)
 	int		j;
 
 	j = 0;
-	if(!buf)
+	if(buf == NULL)
 		return(NULL);
 	while (buf[j] != '\0' && buf[j] != '\n')
 	{
@@ -108,5 +109,5 @@ char	*search_for_new_line(char *buf)
 		ft_strlcpy(str, buf, j + 2);
 		return (str);
 	}
-	return (NULL);
+	return ("");
 }
