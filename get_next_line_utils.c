@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 13:26:04 by phhofman          #+#    #+#             */
-/*   Updated: 2024/10/30 10:51:32 by phhofman         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:13:50 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,23 @@ size_t	ft_strlcat(char *dst, char *src, size_t dstsize)
 	dst[dst_len + i] = '\0';
 	return (dst_len + src_len);
 }
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	size_t	joinlen;
 	char	*join;
 	
+	if(!s1 || !s2)
+		return (NULL);
 	joinlen = ft_strlen(s1) + ft_strlen(s2);
 	join = (char *)malloc(sizeof(char) * (joinlen + 1));
-	if (!join || !s1 || !s2)
+	if (!join)
+	{
+		free_buf(&s1);
 		return (NULL);
+	}
 	ft_strlcpy(join, s1, joinlen + 1);
 	ft_strlcat(join, s2, joinlen + 1);
+	free_buf(&s1);
 	return (join);
 }
 

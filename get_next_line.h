@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 09:10:50 by phhofman          #+#    #+#             */
-/*   Updated: 2024/10/30 10:51:57 by phhofman         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:25:37 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 #	define BUFFER_SIZE 1024
 # endif
 char	*get_next_line(int fd);
-char	*search_for_new_line(char *buf);
+char	*ft_extract_line(char *buf);
 size_t	ft_strlcpy(char *dst, char *src, size_t dstsize);
 size_t	ft_strlen(char *str);
 size_t	ft_strlcat(char *dst, char *src, size_t dstsize);
-char	*ft_strjoin(char*s1, char *s2);
+char	*ft_strjoin_free(char*s1, char *s2);
 char	*ft_strdup(char *s1);
-void	free_buf(int error_flag, char **buf);
+void	free_buf(char **buf);
 
 #endif
