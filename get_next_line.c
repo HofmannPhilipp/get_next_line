@@ -6,11 +6,73 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:00:44 by phhofman          #+#    #+#             */
-/*   Updated: 2024/10/27 18:34:46 by phhofman         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:06:19 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void	free_buf(int error_flag, char **buf)
+{
+	if (error_flag == 1)
+	{
+		free(*buf);
+		*buf = NULL;
+	}
+}
+char	*search_for_new_line(char *buf)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	if(!buf)
+		return(NULL);
+	while (buf[i] != '\0' && buf[i] != '\n')
+		i ++;
+	if (buf[i] == '\n')
+	{
+		str = (char *)malloc(sizeof(char) * (i + 2));
+		if (!str)
+		{
+			return (NULL);
+		}
+		ft_strlcpy(str, buf, i + 2);
+		return (str);
+	}
+	return (NULL);
+}
+char *process_remaining_buffer(char *rest_buf, char *str)
+{
+	char *remaining = ft_strdup(rest_buf + ft_strlen(str));
+	free(rest_buf);
+	return remaining;
+}
+// char *read_and_process(int fd, char *rest_buf, int *error_flag)
+// {
+// 	char buf[BUFFER_SIZE + 1];
+// 	ssize_t bytes_read;
+// 	char *remaining;
+// 	char *str;
+
+// 	while ((bytes_read = read(fd, buf, BUFFER_SIZE)) > 0) {
+// 		buf[bytes_read] = '\0';
+// 		remaining = ft_strjoin(rest_buf, buf);
+// 		if (!remaining)
+// 			return (free_buf(1, &rest_buf), NULL);
+// 		free(rest_buf);
+// 		rest_buf = remaining;
+// 		str = search_for_new_line(rest_buf);
+// 		if (str) {
+// 			remaining = process_remaining_buffer(rest_buf, str);
+// 		if (!remaining)
+// 			return (free_buf(1, &rest_buf), NULL);
+// 		rest_buf = remaining;
+// 		return (str);
+// 		}
+// 	}
+// 	return (NULL);
+// }
 
 char	*get_next_line(int fd)
 {
@@ -22,81 +84,40 @@ char	*get_next_line(int fd)
 	char	*str;
 	char	*remaining;
 	
-	if (rest_buf)
-	{
-		str = search_for_new_line(rest_buf);
-		if (str)
-		{	
-			remaining = ft_strdup(rest_buf + ft_strlen(str));
-			if (!remaining)
-			{
-				free(rest_buf);
-				rest_buf = NULL;
-				return (NULL);
-			}
-			free(rest_buf);
-			rest_buf = NULL;
-			rest_buf = remaining;
-			return (str);
-		}
-	}
-	else
+	if (!rest_buf)
 	{
 		rest_buf = ft_strdup("");
 		if (!rest_buf)
 			return (NULL);
 	}
-
-
-	bytes_read = read(fd, buf, BUFFER_SIZE);
-	while (bytes_read > 0)
+	str = search_for_new_line(rest_buf);
+	if (str)
+	{
+		rest_buf = process_remaining_buffer(rest_buf, str);
+		return (str);
+	}
+	while ((bytes_read = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		buf[bytes_read] = '\0';
 		remaining = ft_strjoin(rest_buf, buf);
 		if (!remaining)
-		{
-			free(rest_buf);
-			rest_buf = NULL;
-			return (NULL);
-		}
+			return (free_buf(1, &rest_buf), NULL);
 		free(rest_buf);
 		rest_buf = remaining;
-		
 		str = search_for_new_line(rest_buf);
 		if (str)
-		{	
-			remaining = ft_strdup(rest_buf + ft_strlen(str));
-			if (!remaining)
-			{
-				free (rest_buf);
-				rest_buf = NULL;
-				return (NULL);
-			}
-			free(rest_buf);
-			rest_buf = remaining;
+		{
+			rest_buf = process_remaining_buffer(rest_buf, str);
 			return (str);
 		}
-
-		bytes_read = read(fd, buf, BUFFER_SIZE);
 	}
-	if (bytes_read == -1)
-	{
-		free(rest_buf);
-		rest_buf = NULL;
-		return (NULL);
-	}
-
-	if (rest_buf && *rest_buf != '\0')
+	if (rest_buf && *rest_buf != '\0' && bytes_read != -1)
 	{
 		str = ft_strdup(rest_buf);
-		free(rest_buf);
-		rest_buf = NULL;
+		free_buf(1, &rest_buf);
 		return (str);
 	}
-
-	free(rest_buf);
-	rest_buf = NULL;
-	return (NULL);
+	return (free_buf(1, &rest_buf), NULL);
 }
 // #include <stdio.h>
 

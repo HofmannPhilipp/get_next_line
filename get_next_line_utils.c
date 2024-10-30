@@ -6,13 +6,13 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 13:26:04 by phhofman          #+#    #+#             */
-/*   Updated: 2024/10/27 18:54:42 by phhofman         ###   ########.fr       */
+/*   Updated: 2024/10/30 10:51:32 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen(char *str)
 {
 	size_t	i;
 
@@ -23,11 +23,13 @@ size_t	ft_strlen(const char *str)
 	}
 	return (i);
 }
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(char *s1)
 {
 	size_t	len;
 	char	*dup;
 
+	if (!s1)
+		return (NULL);
 	len = ft_strlen(s1);
 	dup = (char *)malloc(sizeof(char) * (len + 1));
 	if (dup == NULL)
@@ -35,7 +37,7 @@ char	*ft_strdup(const char *s1)
 	ft_strlcpy(dup, s1, len + 1);
 	return (dup);
 }
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
 {
 	size_t	i;
 
@@ -53,7 +55,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 		i ++;
 	return (i);
 }
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcat(char *dst, char *src, size_t dstsize)
 {
 	size_t	i;
 	size_t	src_len;
@@ -74,39 +76,20 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	dst[dst_len + i] = '\0';
 	return (dst_len + src_len);
 }
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	joinlen;
 	char	*join;
-
+	
 	joinlen = ft_strlen(s1) + ft_strlen(s2);
 	join = (char *)malloc(sizeof(char) * (joinlen + 1));
-	if (!join)
+	if (!join || !s1 || !s2)
 		return (NULL);
 	ft_strlcpy(join, s1, joinlen + 1);
 	ft_strlcat(join, s2, joinlen + 1);
 	return (join);
 }
 
-char	*search_for_new_line(char *buf)
-{
-	char	*str;
-	int		j;
 
-	j = 0;
-	if(!buf)
-		return(NULL);
-	while (buf[j] != '\0' && buf[j] != '\n')
-	{
-		j ++;
-	}
-	if (buf[j] == '\n')
-	{
-		str = (char *)malloc(sizeof(char) * (j + 2)); // +2 because of the \n and \0
-		if (!str)
-			return (NULL);
-		ft_strlcpy(str, buf, j + 2);
-		return (str);
-	}
-	return (NULL);
-}
+
+
