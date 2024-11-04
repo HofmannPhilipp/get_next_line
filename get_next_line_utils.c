@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 13:26:04 by phhofman          #+#    #+#             */
-/*   Updated: 2024/10/30 16:13:50 by phhofman         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:12:57 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ size_t	ft_strlen(char *str)
 	}
 	return (i);
 }
+
 char	*ft_strdup(char *s1)
 {
 	size_t	len;
@@ -37,6 +38,7 @@ char	*ft_strdup(char *s1)
 	ft_strlcpy(dup, s1, len + 1);
 	return (dup);
 }
+
 size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
 {
 	size_t	i;
@@ -55,6 +57,7 @@ size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
 		i ++;
 	return (i);
 }
+
 size_t	ft_strlcat(char *dst, char *src, size_t dstsize)
 {
 	size_t	i;
@@ -76,12 +79,13 @@ size_t	ft_strlcat(char *dst, char *src, size_t dstsize)
 	dst[dst_len + i] = '\0';
 	return (dst_len + src_len);
 }
+
 char	*ft_strjoin_free(char *s1, char *s2)
 {
 	size_t	joinlen;
 	char	*join;
-	
-	if(!s1 || !s2)
+
+	if (!s1 || !s2)
 		return (NULL);
 	joinlen = ft_strlen(s1) + ft_strlen(s2);
 	join = (char *)malloc(sizeof(char) * (joinlen + 1));
@@ -95,7 +99,3 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	free_buf(&s1);
 	return (join);
 }
-
-
-
-
