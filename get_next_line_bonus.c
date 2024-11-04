@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:26:02 by phhofman          #+#    #+#             */
-/*   Updated: 2024/11/04 10:44:02 by phhofman         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:50:45 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,28 +61,28 @@ ssize_t	read_buffer(int fd, char *buffer, ssize_t *bytes_read)
 
 char	*get_next_line(int fd)
 {
-	static char	*rest_buffer[OPEN_MAX + 1];
+	static char	*r_buffer[OPEN_MAX + 1];
 	char		buffer[BUFFER_SIZE + 1];
 	char		*line;
 	ssize_t		bytes_read;
 
-	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0 )
+	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!rest_buffer[fd])
-		rest_buffer[fd] = ft_strdup("");
-	if (!rest_buffer[fd])
+	if (!r_buffer[fd])
+		r_buffer[fd] = ft_strdup("");
+	if (!r_buffer[fd])
 		return (NULL);
-	line = ft_extract_line(rest_buffer[fd]);
+	line = ft_extract_line(r_buffer[fd]);
 	while (!line && read_buffer(fd, buffer, &bytes_read) > 0)
 	{
-		rest_buffer[fd] = ft_strjoin_free(rest_buffer[fd], buffer);
-		if (!rest_buffer[fd])
+		r_buffer[fd] = ft_strjoin_free(r_buffer[fd], buffer);
+		if (!r_buffer[fd])
 			return (NULL);
-		line = ft_extract_line(rest_buffer[fd]);
+		line = ft_extract_line(r_buffer[fd]);
 	}
 	if (line)
-		return (rest_buffer[fd] = ft_update_buffer(rest_buffer[fd], line), line);
-	if (bytes_read != -1 && rest_buffer[fd][0] != '\0')
-		return (line = ft_strdup(rest_buffer[fd]), free_buf(&rest_buffer[fd]), line);
-	return (free_buf(&rest_buffer[fd]), NULL);
+		return (r_buffer[fd] = ft_update_buffer(r_buffer[fd], line), line);
+	if (bytes_read != -1 && r_buffer[fd][0] != '\0')
+		return (line = ft_strdup(r_buffer[fd]), free_buf(&r_buffer[fd]), line);
+	return (free_buf(&r_buffer[fd]), NULL);
 }
