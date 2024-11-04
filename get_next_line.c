@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:00:44 by phhofman          #+#    #+#             */
-/*   Updated: 2024/11/04 10:43:08 by phhofman         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:30:50 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ char	*get_next_line(int fd)
 	char		*line;
 	ssize_t		bytes_read;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	if (!rest_buffer)
 		rest_buffer = ft_strdup("");
-	if (!rest_buffer || fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
 	line = ft_extract_line(rest_buffer);
 	while (!line && read_buffer(fd, buffer, &bytes_read) > 0)
 	{
